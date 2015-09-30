@@ -1,0 +1,197 @@
+%!
+%!PS-Adobe-2.0
+%
+% Wireshark - Network traffic analyzer
+% By Gerald Combs <gerald@wireshark.org>
+% Copyright 1998 Gerald Combs
+%
+%%Creator: Wireshark
+%%Title: Wireshark output
+%%DocumentFonts: Helvetica Monaco
+%%EndComments
+%!
+
+%
+% Ghostscript http://ghostscript.com/ can convert postscript to pdf files.
+%
+% To convert this postscript file to pdf, type (for US letter format):
+% ps2pdf filename.ps
+%
+% or (for A4 format):
+% ps2pdf -sPAPERSIZE=a4 filename.ps
+%
+% ... and of course replace filename.ps by your current filename.
+%
+% The pdfmark's below will help converting to a pdf file, and have no
+% effect when printing the postscript directly.
+% 
+
+%   This line is necessary if the file should be printable, and not just used
+%   for distilling into PDF:
+%
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+%
+%   This tells PDF viewers to display bookmarks when the document is opened:
+%
+[/PageMode /UseOutlines /DOCVIEW pdfmark
+
+% Get the Imagable Area of the page
+clippath pathbbox
+
+% Set vmax to the vertical size of the page,
+% hmax to the horizontal size of the page.
+/vmax exch def
+/hmax exch def
+pop pop		% junk
+
+% 1/2-inch margins
+/lmargin 36 def					% left margin
+/tmargin vmax 56 sub def		% top margin
+/bmargin 36 def					% bottom margin
+/pagenumtab hmax 36 sub def		% right margin
+
+% Counters
+/thispagenum 1 def
+
+% Strings
+/pagenostr 7 string def
+
+
+/formfeed {
+	printpagedecorations
+	showpage
+	
+	% we need a new current point after showpage is done
+	lmargin		% X
+	vpos 		% Y
+	moveto
+	/vpos tmargin def
+} def
+
+% Prints text with possible indenting
+/putline_single {
+	exch 10 mul lmargin add		% X
+	vpos 						% Y
+	moveto
+	show
+
+	/vpos vpos 10 sub def
+
+	vpos 5 sub bmargin le 		% is vpos <= bottom margin?
+	{
+		formfeed
+	}
+	if							% then formfeed and start at top
+} def
+
+
+% Prints text with possible indenting and line wrap
+/putline {
+	/text exch def
+	/indent exch def
+	
+	% wrapat = width / sizeof font (remember: monospaced font)
+	/pagewidth pagenumtab lmargin sub def
+	/cwidth (A) stringwidth pop def
+	/wrapat pagewidth cwidth div cvi def
+		
+	text length wrapat le {
+		% print line
+		indent text 0 text length getinterval putline_single
+	}{
+		% print the lines first part
+		indent text 0 wrapat getinterval putline_single
+		% print wrapped rest
+		indent text wrapat text length wrapat sub getinterval putline
+	}
+	ifelse
+} def
+
+
+% Prints the page number at the top right
+/printpagedecorations {
+	gsave
+		% Set the font to 8 point
+		/Helvetica findfont 8 scalefont setfont
+
+		% title
+		lmargin						% X
+		vmax 36 sub					% Y
+		moveto
+		ws_pagetitle show
+
+		% this page number
+		pagenumtab (Page ) stringwidth pop sub thispagenum pagenostr cvs stringwidth pop sub 		% X
+		vmax 36 sub					% Y
+		moveto
+		(Page ) show
+		thispagenum pagenostr cvs show
+
+		% thispagenum++
+		/thispagenum thispagenum 1 add def
+		
+		% line at top of page
+		lmargin						% X
+		vmax 38 sub					% Y
+		moveto
+		
+		pagenumtab					% X
+		vmax 38 sub					% Y
+		lineto
+		stroke
+		
+		% line at bottom of page
+		lmargin						% X
+		bmargin						% Y
+		moveto
+		
+		pagenumtab					% X
+		bmargin						% Y
+		lineto
+		stroke
+		
+	grestore
+} def
+	
+% Reset the vertical position
+/vpos tmargin def
+
+% Set the font to 8 point
+/Monaco findfont 8 scalefont setfont
+
+%% the page title
+/ws_pagetitle (C:\\Users\\Rahul\\AppData\\Local\\Temp\\wireshark_pcapng_038E8AFA-4C86-47FF-9382-1378B729F42A_20150926203524_a07720 - Wireshark 1.12.7 (v1.12.7-0-g7fc8978 from master-1.12)) def
+
+0 (No.     Time           Source                Destination           Protocol Length Info) putline
+[/Dest /__frame92__ /Title (     92 9.279346000    192.168.0.5           128.119.245.12        HTTP     590    GET /wireshark-labs/HTTP-wireshark-file2.html HTTP/1.1 )   /OUT pdfmark
+[/View [/XYZ -4 currentpoint matrix currentmatrix matrix defaultmatrix
+matrix invertmatrix matrix concatmatrix transform exch pop 20 add null]
+/Dest /__frame92__ /DEST pdfmark
+0 (     92 9.279346000    192.168.0.5           128.119.245.12        HTTP     590    GET /wireshark-labs/HTTP-wireshark-file2.html HTTP/1.1 ) putline
+0 () putline
+0 (Frame 92: 590 bytes on wire \(4720 bits\), 590 bytes captured \(4720 bits\) on interface 0) putline
+0 (Ethernet II, Src: IntelCor_0b:f5:63 \(88:53:2e:0b:f5:63\), Dst: ArrisGro_e3:29:37 \(98:6b:3d:e3:29:37\)) putline
+0 (Internet Protocol Version 4, Src: 192.168.0.5 \(192.168.0.5\), Dst: 128.119.245.12 \(128.119.245.12\)) putline
+0 (Transmission Control Protocol, Src Port: 49828 \(49828\), Dst Port: 80 \(80\), Seq: 1, Ack: 1, Len: 536) putline
+0 (Hypertext Transfer Protocol) putline
+1 (GET /wireshark-labs/HTTP-wireshark-file2.html HTTP/1.1\\r\\n) putline
+1 (Host: gaia.cs.umass.edu\\r\\n) putline
+1 (Connection: keep-alive\\r\\n) putline
+1 (Cache-Control: max-age=0\\r\\n) putline
+1 (Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\\r\\n) putline
+1 (Upgrade-Insecure-Requests: 1\\r\\n) putline
+1 (User-Agent: Mozilla/5.0 \(Windows NT 6.1; WOW64\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/45.0.2454.101 Safari/537.36\\r\\n) putline
+1 (Accept-Encoding: gzip, deflate, sdch\\r\\n) putline
+1 (Accept-Language: en-US,en;q=0.8,de;q=0.6\\r\\n) putline
+1 (If-None-Match: "173-520a0292b800d"\\r\\n) putline
+1 (If-Modified-Since: Sat, 26 Sep 2015 05:59:01 GMT\\r\\n) putline
+1 (\\r\\n) putline
+1 ([Full request URI: http://gaia.cs.umass.edu/wireshark-labs/HTTP-wireshark-file2.html]) putline
+1 ([HTTP request 1/1]) putline
+1 ([Response in frame: 95]) putline
+
+printpagedecorations
+showpage
+
+%%EOF
+
