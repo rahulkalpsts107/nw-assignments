@@ -1,0 +1,292 @@
+%!
+%!PS-Adobe-2.0
+%
+% Wireshark - Network traffic analyzer
+% By Gerald Combs <gerald@wireshark.org>
+% Copyright 1998 Gerald Combs
+%
+%%Creator: Wireshark
+%%Title: Wireshark output
+%%DocumentFonts: Helvetica Monaco
+%%EndComments
+%!
+
+%
+% Ghostscript http://ghostscript.com/ can convert postscript to pdf files.
+%
+% To convert this postscript file to pdf, type (for US letter format):
+% ps2pdf filename.ps
+%
+% or (for A4 format):
+% ps2pdf -sPAPERSIZE=a4 filename.ps
+%
+% ... and of course replace filename.ps by your current filename.
+%
+% The pdfmark's below will help converting to a pdf file, and have no
+% effect when printing the postscript directly.
+% 
+
+%   This line is necessary if the file should be printable, and not just used
+%   for distilling into PDF:
+%
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+%
+%   This tells PDF viewers to display bookmarks when the document is opened:
+%
+[/PageMode /UseOutlines /DOCVIEW pdfmark
+
+% Get the Imagable Area of the page
+clippath pathbbox
+
+% Set vmax to the vertical size of the page,
+% hmax to the horizontal size of the page.
+/vmax exch def
+/hmax exch def
+pop pop		% junk
+
+% 1/2-inch margins
+/lmargin 36 def					% left margin
+/tmargin vmax 56 sub def		% top margin
+/bmargin 36 def					% bottom margin
+/pagenumtab hmax 36 sub def		% right margin
+
+% Counters
+/thispagenum 1 def
+
+% Strings
+/pagenostr 7 string def
+
+
+/formfeed {
+	printpagedecorations
+	showpage
+	
+	% we need a new current point after showpage is done
+	lmargin		% X
+	vpos 		% Y
+	moveto
+	/vpos tmargin def
+} def
+
+% Prints text with possible indenting
+/putline_single {
+	exch 10 mul lmargin add		% X
+	vpos 						% Y
+	moveto
+	show
+
+	/vpos vpos 10 sub def
+
+	vpos 5 sub bmargin le 		% is vpos <= bottom margin?
+	{
+		formfeed
+	}
+	if							% then formfeed and start at top
+} def
+
+
+% Prints text with possible indenting and line wrap
+/putline {
+	/text exch def
+	/indent exch def
+	
+	% wrapat = width / sizeof font (remember: monospaced font)
+	/pagewidth pagenumtab lmargin sub def
+	/cwidth (A) stringwidth pop def
+	/wrapat pagewidth cwidth div cvi def
+		
+	text length wrapat le {
+		% print line
+		indent text 0 text length getinterval putline_single
+	}{
+		% print the lines first part
+		indent text 0 wrapat getinterval putline_single
+		% print wrapped rest
+		indent text wrapat text length wrapat sub getinterval putline
+	}
+	ifelse
+} def
+
+
+% Prints the page number at the top right
+/printpagedecorations {
+	gsave
+		% Set the font to 8 point
+		/Helvetica findfont 8 scalefont setfont
+
+		% title
+		lmargin						% X
+		vmax 36 sub					% Y
+		moveto
+		ws_pagetitle show
+
+		% this page number
+		pagenumtab (Page ) stringwidth pop sub thispagenum pagenostr cvs stringwidth pop sub 		% X
+		vmax 36 sub					% Y
+		moveto
+		(Page ) show
+		thispagenum pagenostr cvs show
+
+		% thispagenum++
+		/thispagenum thispagenum 1 add def
+		
+		% line at top of page
+		lmargin						% X
+		vmax 38 sub					% Y
+		moveto
+		
+		pagenumtab					% X
+		vmax 38 sub					% Y
+		lineto
+		stroke
+		
+		% line at bottom of page
+		lmargin						% X
+		bmargin						% Y
+		moveto
+		
+		pagenumtab					% X
+		bmargin						% Y
+		lineto
+		stroke
+		
+	grestore
+} def
+	
+% Reset the vertical position
+/vpos tmargin def
+
+% Set the font to 8 point
+/Monaco findfont 8 scalefont setfont
+
+%% the page title
+/ws_pagetitle (F:\\classes\\6843-Networks\\assignments\\nw-assignments\\wireshark_assignments\\assignment6\\wireshark-traces\\ip-ethereal-trace-1 - Wireshark 1.12.7 (v1.12.7-0-g7fc8978 from master-1.12)) def
+
+0 (No.     Time                       Source                Destination           Protocol Length Info) putline
+[/Dest /__frame367__ /Title (    367 2004-08-22 01:48:50.436184 192.168.1.102         128.59.23.100         IPv4     1514   Fragmented IP protocol \(proto=ICMP 1, off=1480, ID=334a\) [Reassembled in #368])   /OUT pdfmark
+[/View [/XYZ -4 currentpoint matrix currentmatrix matrix defaultmatrix
+matrix invertmatrix matrix concatmatrix transform exch pop 20 add null]
+/Dest /__frame367__ /DEST pdfmark
+0 (    367 2004-08-22 01:48:50.436184 192.168.1.102         128.59.23.100         IPv4     1514   Fragmented IP protocol \(proto=ICMP 1, off=1480, ID=334a\) [Reassembled in #368]) putline
+0 () putline
+0 (Frame 367: 1514 bytes on wire \(12112 bits\), 1514 bytes captured \(12112 bits\)) putline
+0 (Ethernet II, Src: Actionte_8a:70:1a \(00:20:e0:8a:70:1a\), Dst: LinksysG_da:af:73 \(00:06:25:da:af:73\)) putline
+0 (Internet Protocol Version 4, Src: 192.168.1.102 \(192.168.1.102\), Dst: 128.59.23.100 \(128.59.23.100\)) putline
+1 (Version: 4) putline
+1 (Header Length: 20 bytes) putline
+1 (Differentiated Services Field: 0x00 \(DSCP 0x00: Default; ECN: 0x00: Not-ECT \(Not ECN-Capable Transport\)\)) putline
+1 (Total Length: 1500) putline
+1 (Identification: 0x334a \(13130\)) putline
+1 (Flags: 0x01 \(More Fragments\)) putline
+1 (Fragment offset: 1480) putline
+1 (Time to live: 13) putline
+1 (Protocol: ICMP \(1\)) putline
+1 (Header checksum: 0xfa70 [validation disabled]) putline
+1 (Source: 192.168.1.102 \(192.168.1.102\)) putline
+1 (Destination: 128.59.23.100 \(128.59.23.100\)) putline
+1 ([Source GeoIP: Unknown]) putline
+1 ([Destination GeoIP: Unknown]) putline
+1 (Reassembled IPv4 in frame: 368) putline
+0 (Data \(1480 bytes\)) putline
+0 () putline
+0 (0000  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0010  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0020  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0030  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0040  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0050  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0060  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0070  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0080  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0090  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (00a0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (00b0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (00c0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (00d0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (00e0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (00f0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0100  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0110  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0120  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0130  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0140  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0150  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0160  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0170  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0180  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0190  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (01a0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (01b0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (01c0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (01d0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (01e0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (01f0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0200  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0210  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0220  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0230  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0240  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0250  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0260  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0270  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0280  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0290  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (02a0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (02b0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (02c0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (02d0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (02e0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (02f0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0300  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0310  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0320  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0330  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0340  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0350  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0360  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0370  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0380  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0390  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (03a0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (03b0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (03c0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (03d0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (03e0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (03f0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0400  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0410  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0420  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0430  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0440  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0450  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0460  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0470  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0480  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0490  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (04a0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (04b0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (04c0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (04d0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (04e0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (04f0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0500  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0510  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0520  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0530  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0540  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0550  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0560  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0570  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0580  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (0590  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (05a0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (05b0  aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa   ................) putline
+0 (05c0  aa aa aa aa aa aa aa aa                           ........) putline
+1 (Data: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...) putline
+1 ([Length: 1480]) putline
+
+printpagedecorations
+showpage
+
+%%EOF
+
